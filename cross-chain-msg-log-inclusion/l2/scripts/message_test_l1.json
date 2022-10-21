@@ -1,0 +1,87 @@
+[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "l2ContractAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_mailbox",
+				"type": "address"
+			}
+		],
+		"name": "callZkSync",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_mailbox",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isService",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint16",
+				"name": "_txNumberInBlock",
+				"type": "uint16"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_l2TxHash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_l2BlockNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_l2MessageIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "_merkleProof",
+				"type": "bytes32[]"
+			}
+		],
+		"name": "checkLog",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
