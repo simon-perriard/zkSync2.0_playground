@@ -2,11 +2,8 @@ import { BigNumber, Contract, ethers, Wallet } from 'ethers';
 import { Provider, utils } from 'zksync-web3';
 import fs from 'fs';
 
-const MESSAGE_TEST_L1_ABI = require('./message_test_l1.json');
-const MESSAGE_TEST_L1_ADDRESS = '0x3Dc187F25923a8fAA141Dd7Db391E91BE0A6361B';
-const MESSAGE_TEST_L2_ABI = require('./message_test_l2.json');
-const MESSAGE_TEST_L2_ADDRESS = '0xE9E691D9EFADEAE0FA870C4c22B5F316fe458Ac7';
-const MAILBOX_L1 = '0xc8acfc3f7b44e12f98d06d6e2286c6bc7f2ef9bb';
+const FORWARDER1_ABI = require('../artifacts-zk/contracts/Forwarder1.sol/Forwarder1.json');
+const FORWARDER1_ADDRESS = ""
 
 const PRIV_KEY = fs.readFileSync("../../.private_key").toString();
 
