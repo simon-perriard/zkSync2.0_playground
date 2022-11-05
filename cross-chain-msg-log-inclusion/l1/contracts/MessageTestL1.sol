@@ -1,14 +1,10 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity 0.8.17;
 
 import "@matterlabs/zksync-contracts/l1/contracts/zksync/interfaces/IMailbox.sol";
 import "@matterlabs/zksync-contracts/l1/contracts/zksync/interfaces/IZkSync.sol";
 
-interface IMessageTestL2 {
-    function L2Test() external;
-}
-
-contract MessagesTestL1 {
+contract MessageTestL1 {
     address public owner;
     uint256 constant ERGS_LIMIT = 2097152;
     IMailbox immutable mailbox;
@@ -20,11 +16,12 @@ contract MessagesTestL1 {
     }
 
     function callZkSync(
-        address l2ContractAddr
+        address l2ContractAddr,
+        bool shouldFail
     ) external payable {
         require(msg.sender == owner, "Only owner is allowed");
 
-        bytes memory data = abi.encodePacked(IMessageTestL2.L2Test.selector);
+        bytes memory data = abi.encodeWithSignature("L2Test(bool)", shouldFail);
 
         mailbox.requestL2Transaction{value: msg.value}(l2ContractAddr, 0, data, ERGS_LIMIT, new bytes[](0));
     }

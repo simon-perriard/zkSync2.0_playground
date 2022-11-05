@@ -24,8 +24,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.7.1",
-    "hardhat": "^2.12.0",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.12.2",
     "hardhat-gas-reporter": "^1.0.8",
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.13",
@@ -33,7 +33,8 @@
     "solidity-coverage": "^0.7.20",
     "ts-node": "^10.7.0",
     "typechain": "^8.0.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "zksync-web3": "^0.11.1"
   },
   "dependencies": {
     "@matterlabs/zksync-contracts": "^0.4.2",

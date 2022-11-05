@@ -1,9 +1,15 @@
 [
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "bool",
+				"name": "shouldFail",
+				"type": "bool"
+			}
+		],
 		"name": "L2Test",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "pure",
 		"type": "function"
 	}
 ]

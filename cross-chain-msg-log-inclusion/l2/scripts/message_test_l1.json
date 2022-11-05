@@ -1,6 +1,12 @@
 [
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_mailbox",
+				"type": "address"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -12,9 +18,9 @@
 				"type": "address"
 			},
 			{
-				"internalType": "address",
-				"name": "_mailbox",
-				"type": "address"
+				"internalType": "bool",
+				"name": "shouldFail",
+				"type": "bool"
 			}
 		],
 		"name": "callZkSync",
