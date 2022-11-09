@@ -10,10 +10,12 @@ const MESSAGE_TEST_L2_ABI = require('./message_test_l2.json');
 const MESSAGE_TEST_L2_ADDRESS = '0x5AD349deDd5fe1E9D2778b9d7Bc7844bE73aac0a';
 
 const PRIV_KEY = fs.readFileSync("../../.private_key").toString();
+const GOERLI_ENDPOINT = fs.readFileSync("../../.goerli_endpoint").toString();
+
 
 async function main() {
     // Ethereum L1 provider
-    const l1Provider = ethers.providers.getDefaultProvider('goerli');
+    const l1Provider = ethers.providers.getDefaultProvider(GOERLI_ENDPOINT);
 
     // Governor wallet
     const wallet = new Wallet(PRIV_KEY, l1Provider);
@@ -62,7 +64,7 @@ async function main() {
 
     // Waiting until the L1 tx is complete.
     await tx.wait();
-    //console.log(tx);
+    console.log(tx);
     console.log("L1 TX FINISHED");
     // Getting the TransactionResponse object for the L2 transaction corresponding to the 
     // execution call
