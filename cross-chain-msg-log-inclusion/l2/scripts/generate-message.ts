@@ -5,9 +5,9 @@ import fs from 'fs';
 const l2Provider = new Provider('https://zksync2-testnet.zksync.dev');
 
 const MESSAGE_TEST_L1_ABI = require('./message_test_l1.json');
-const MESSAGE_TEST_L1_ADDRESS = '<L1 contract address>';
+const MESSAGE_TEST_L1_ADDRESS = '0x8B4D470acEa29158840C5CB6A4168558d347f206';
 const MESSAGE_TEST_L2_ABI = require('./message_test_l2.json');
-const MESSAGE_TEST_L2_ADDRESS = '<L2 contract address>';
+const MESSAGE_TEST_L2_ADDRESS = '0x5AD349deDd5fe1E9D2778b9d7Bc7844bE73aac0a';
 
 const PRIV_KEY = fs.readFileSync("../../.private_key").toString();
 
@@ -52,7 +52,7 @@ async function main() {
     // Calling the L1 contract.
     const tx = await l1_contract.callZkSync(
         MESSAGE_TEST_L2_ADDRESS,
-        'false',
+        data,
         {
             // Passing the necessary ETH `value` to cover the fee for the operation
             value: baseCost,
@@ -62,7 +62,7 @@ async function main() {
 
     // Waiting until the L1 tx is complete.
     await tx.wait();
-    console.log(tx);
+    //console.log(tx);
     console.log("L1 TX FINISHED");
     // Getting the TransactionResponse object for the L2 transaction corresponding to the 
     // execution call

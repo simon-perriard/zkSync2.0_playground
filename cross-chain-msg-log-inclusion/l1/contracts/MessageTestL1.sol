@@ -17,11 +17,9 @@ contract MessageTestL1 {
 
     function callZkSync(
         address l2ContractAddr,
-        bool shouldFail
+        bytes calldata data
     ) external payable {
         require(msg.sender == owner, "Only owner is allowed");
-
-        bytes memory data = abi.encodeWithSignature("L2Test(bool)", shouldFail);
 
         mailbox.requestL2Transaction{value: msg.value}(l2ContractAddr, 0, data, ERGS_LIMIT, new bytes[](0));
     }

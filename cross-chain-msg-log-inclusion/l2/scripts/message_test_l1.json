@@ -3,24 +3,13 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_mailbox",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "l2ContractAddr",
 				"type": "address"
 			},
 			{
-				"internalType": "bool",
-				"name": "shouldFail",
-				"type": "bool"
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
 			}
 		],
 		"name": "callZkSync",
@@ -34,7 +23,13 @@
 				"internalType": "address",
 				"name": "_mailbox",
 				"type": "address"
-			},
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "bool",
 				"name": "_isService",
