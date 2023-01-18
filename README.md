@@ -13,3 +13,15 @@ An example of how to prove a failed L2 transaction on L1 is available [here](htt
 
 An example of how to prove that a L2->L1 message has been included is available [here](https://github.com/simon-perriard/zkSync2.0_playground/tree/main/prove_l2_message_inclusion_no_smart_contract). This example does not contains any custom smart contract and only relies on ZkSync API.
 
+## How to run
+
+Create two files at the root of this repo:
+
+```
+.goerli_endpoint
+.private_key
+```
+
+Which contain the Goerli endpoint for RPC calls, and the private key that will be used for testing. The address associated with the private key must have some GoerliETH as well as zkSyncETH. The faucet for Goerli is [here](https://goerli-faucet.pk910.de/), the bridge to fund the zkSync 2.0 wallet is [here](https://portal.zksync.io/).
+
+Further specific running information is given in each subfolder.
