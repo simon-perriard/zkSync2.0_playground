@@ -42,6 +42,6 @@
   },
   "scripts": {
     "build": "hardhat compile",
-    "deploy": "hardhat run --network goerli ./scripts/deploy.ts"
+    "deploy": "hardhat run --network goerli ./deploy/deploy.ts"
   }
 }

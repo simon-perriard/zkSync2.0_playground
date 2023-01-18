@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "hardhat run ",
-    "deploy": "hardhat deploy-zksync",
+    "deploy": "yarn hardhat compile && hardhat deploy-zksync",
     "build": "yarn hardhat compile"
   }
 }

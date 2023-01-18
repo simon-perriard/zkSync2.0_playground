@@ -5,7 +5,7 @@
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
 import { Provider } from 'zksync-web3';
-
+import fs from "fs";
 
 async function main() {
 
@@ -14,8 +14,11 @@ async function main() {
 
   // We get the contract to deploy
   const MessagesTestL1 = await ethers.getContractFactory("MessageTestL1");
-  const contract = await MessagesTestL1.deploy(["0xcB3D5008e03Bf569dcdf17259Fa30726ED646931"]);
+  const contract = await MessagesTestL1.deploy(MAILBOX_L1);
   await contract.deployed();
+
+  // Write the deployment address in the target file
+  fs.writeFileSync("../l1_deployment_address", contract.address);
 
   console.log(`MessageTestL1 contract was successfully deployed at ${contract.address}`);
 }

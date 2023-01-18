@@ -3,10 +3,11 @@ import { Provider, utils } from 'zksync-web3';
 import fs from 'fs';
 import { BOOTLOADER_FORMAL_ADDRESS, sleep } from 'zksync-web3/build/src/utils';
 
-const MESSAGE_TEST_L1_ABI = require('./message_test_l1.json');
-const MESSAGE_TEST_L1_ADDRESS = '0xABb87d458c0a9B1c3C82f95e417cb7df10C3fcDf';
-const MESSAGE_TEST_L2_ABI = require('./message_test_l2.json');
-const MESSAGE_TEST_L2_ADDRESS = '0xceD8E23AD0aD6042B19F369311F9B4E7d660bB5F';
+const MESSAGE_TEST_L1_ABI = JSON.parse(fs.readFileSync(require.resolve('../../l1/artifacts/contracts/MessageTestL1.sol/MessageTestL1.json')).toString()).abi;
+const MESSAGE_TEST_L2_ABI = JSON.parse(fs.readFileSync(require.resolve('../artifacts-zk/contracts/MessageTestL2.sol/MessageTestL2.json')).toString()).abi;
+
+const MESSAGE_TEST_L1_ADDRESS = fs.readFileSync(require.resolve('../../l1_deployment_address')).toString();
+const MESSAGE_TEST_L2_ADDRESS = fs.readFileSync(require.resolve('../../l2_deployment_address')).toString();
 
 const PRIV_KEY = fs.readFileSync(require.resolve('../../../.private_key')).toString();
 const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../../../.goerli_endpoint')).toString();
