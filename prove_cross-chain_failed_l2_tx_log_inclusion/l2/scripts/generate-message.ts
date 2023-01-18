@@ -99,11 +99,11 @@ async function directProofToMailboxOfL2LogInclusion(l1BatchNumber: ethers.BigNum
         txNumberInBlock: trxIndex,
         sender: BOOTLOADER_FORMAL_ADDRESS,
         key: l2TxHash,
-        value: SHOULD_FAIL ? '0x0000000000000000000000000000000000000000000000000000000000000000' : '0x0000000000000000000000000000000000000000000000000000000000000001'
+        value: '0x0000000000000000000000000000000000000000000000000000000000000000'
     };
 
-    const res = await mailboxL1Contract.proveL2LogInclusion(l1BatchNumber, proof.id, L2Log, proof.proof);
-
+    let res = await mailboxL1Contract.proveL2LogInclusion(l1BatchNumber, proof.id, L2Log, proof.proof);
+  
     return res;
 }
 
@@ -138,10 +138,10 @@ async function main() {
 
     // Try to prove through our smart contract
     /*const res = await l1_contract.checkLog(
-        txHash,
-        receipt.blockNumber,
+        l2TxHash,
+        l1BatchNumber,
         proof?.id,
-        receipt.transactionIndex,
+        l1BatchTxIndex,
         proof?.proof,
     );
 

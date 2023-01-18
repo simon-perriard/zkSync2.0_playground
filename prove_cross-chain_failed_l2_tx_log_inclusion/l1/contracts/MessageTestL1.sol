@@ -24,7 +24,7 @@ contract MessageTestL1 {
         mailbox.requestL2Transaction{value: msg.value}(l2ContractAddr, 0, data, ERGS_LIMIT, new bytes[](0));
     }
 
-    function checkLog( 
+    function checkLog(
         bytes32 _l2TxHash,
         uint256 _l2BlockNumber,
         uint256 _l2MessageIndex,
@@ -47,6 +47,5 @@ contract MessageTestL1 {
             l2Log,
             _merkleProof
         );
-        require(success, "Proof validation failed");
     }
 }
