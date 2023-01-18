@@ -3,7 +3,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
 import fs from "fs";
 
-const PRIV_KEY = fs.readFileSync("../../.private_key").toString();
+const PRIV_KEY = fs.readFileSync("../.private_key").toString();
 
 // An example of a deploy script that will deploy and call a simple contract.
 export default async function (hre: HardhatRuntimeEnvironment) {

@@ -6,7 +6,7 @@ import "./Forwarder2.sol";
 
 contract Forwarder1 {
 
-    address payable immutable f2;
+    address payable immutable public f2;
 
     event GasLeft1(uint256);
 

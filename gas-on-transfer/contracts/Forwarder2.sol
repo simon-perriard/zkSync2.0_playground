@@ -14,6 +14,9 @@ contract Forwarder2 {
 
     receive() external payable {
         emit GasLeft2(gasleft());
+    }
+
+    function sweep() external {
         owner.transfer(address(this).balance);
     }
 }

@@ -28,7 +28,7 @@ let zkSyncAddress: string;
 // Getting the `Contract` object of the zkSync bridge
 let zkSyncContract: Contract;
 
-const SHOULD_FAIL = false
+const SHOULD_FAIL = true
 
 async function zkSyncAddressSetup() {
     zkSyncAddress = await l2Provider.getMainContractAddress();
@@ -50,6 +50,7 @@ async function triggerFromL1() {
 
     // Here we define the constant for ergs limit .
     const ergsLimit = BigNumber.from(2097152);
+    
     // Getting the cost of the execution.
     // For now, hardcoded 0 in testnet
     const baseCost = 0;/*await zkSyncContract.l2TransactionBaseCost(
