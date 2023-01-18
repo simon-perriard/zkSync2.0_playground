@@ -19,8 +19,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-const PRIV_KEY = fs.readFileSync("../../.private_key").toString();
-const GOERLI_ENDPOINT = fs.readFileSync("../../.goerli_endpoint").toString();
+const PRIV_KEY = fs.readFileSync(require.resolve('../../.private_key')).toString();
+const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../../.goerli_endpoint')).toString();
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more

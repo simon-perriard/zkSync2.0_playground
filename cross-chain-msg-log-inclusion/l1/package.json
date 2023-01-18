@@ -37,7 +37,7 @@
     "zksync-web3": "^0.11.1"
   },
   "dependencies": {
-    "@matterlabs/zksync-contracts": "^0.4.2",
+    "@matterlabs/zksync-contracts": "^0.5.1",
     "@openzeppelin/contracts": "^4.5.0"
   },
   "scripts": {

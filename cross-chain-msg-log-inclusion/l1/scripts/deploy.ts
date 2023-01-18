@@ -14,7 +14,7 @@ async function main() {
 
   // We get the contract to deploy
   const MessagesTestL1 = await ethers.getContractFactory("MessageTestL1");
-  const contract = await MessagesTestL1.deploy([MAILBOX_L1]);
+  const contract = await MessagesTestL1.deploy(["0xcB3D5008e03Bf569dcdf17259Fa30726ED646931"]);
   await contract.deployed();
 
   console.log(`MessageTestL1 contract was successfully deployed at ${contract.address}`);

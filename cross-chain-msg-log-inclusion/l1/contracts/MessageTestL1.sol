@@ -25,20 +25,20 @@ contract MessageTestL1 {
     }
 
     function checkLog( 
-        bool _isService,
-        uint16 _txNumberInBlock,
         bytes32 _l2TxHash,
         uint256 _l2BlockNumber,
         uint256 _l2MessageIndex,
+        uint16 _l2TxNumberInBlock,
         bytes32[] calldata _merkleProof
     ) external view returns(bool success){
         require(msg.sender == owner, "Only owner is allowed");
         L2Log memory l2Log = L2Log({
-            l2ShardId: uint8(0),
-            isService: _isService,
-            txNumberInBlock: _txNumberInBlock,
+            l2ShardId: 0,
+            isService: true,
+            txNumberInBlock: _l2TxNumberInBlock,
             sender: BOOTLOADER_ADDRESS,
             key: _l2TxHash,
+            // value is 0 for failed transactions
             value: bytes32(0)
             });
         success = mailbox.proveL2LogInclusion(
@@ -47,5 +47,6 @@ contract MessageTestL1 {
             l2Log,
             _merkleProof
         );
+        require(success, "Proof validation failed");
     }
 }

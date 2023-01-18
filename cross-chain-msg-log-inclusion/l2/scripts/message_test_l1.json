@@ -3,6 +3,17 @@
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "_mailbox",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "l2ContractAddr",
 				"type": "address"
 			},
@@ -20,27 +31,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_mailbox",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bool",
-				"name": "_isService",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint16",
-				"name": "_txNumberInBlock",
-				"type": "uint16"
-			},
-			{
 				"internalType": "bytes32",
 				"name": "_l2TxHash",
 				"type": "bytes32"
@@ -54,6 +44,11 @@
 				"internalType": "uint256",
 				"name": "_l2MessageIndex",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint16",
+				"name": "_l2TxNumberInBlock",
+				"type": "uint16"
 			},
 			{
 				"internalType": "bytes32[]",
