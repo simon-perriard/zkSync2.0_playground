@@ -81,7 +81,7 @@ async function getProof(l2TxHash) {
     // Wait for the proof to be generated
     let proof = await l2Provider.getLogProof(l2TxHash);
     while (proof == null){
-        console.log("Waiting a bit more...");
+        console.log("Waiting a bit more for the proof to be generated...");
         await sleep(1000*30);
         proof = await l2Provider.getLogProof(l2TxHash);
     }
@@ -89,9 +89,8 @@ async function getProof(l2TxHash) {
 }
 
 async function directProofToMailboxOfL2LogInclusion(l1BatchNumber: ethers.BigNumberish, l2TxHash: ethers.BigNumberish, proof: any, trxIndex: number) {
-    const zkAddress = await l2Provider.getMainContractAddress();
 
-    const mailboxL1Contract = new ethers.Contract(zkAddress, utils.ZKSYNC_MAIN_ABI, l1Provider);
+    const mailboxL1Contract = new ethers.Contract(zkSyncAddress, utils.ZKSYNC_MAIN_ABI, l1Provider);
 
     const L2Log = {
         l2ShardId: 0,
@@ -131,21 +130,31 @@ async function main() {
 
     const {l1BatchNumber, l1BatchTxIndex} = await l2Provider.getTransactionReceipt(l2TxHash);
 
-    // Try to prove directly through the mailbox
-    const res1 = await directProofToMailboxOfL2LogInclusion(l1BatchNumber, l2TxHash, proof, l1BatchTxIndex);
+    // We need to wait for our target block to be verified on L1
+    // We may have the proof but the block must be submitted to L1 for the verification request to work
+    let executedSoFar = (await zkSyncContract.getTotalBlocksExecuted()).toNumber();
 
-    console.log("Result of direct proof: ", res1);
+    while(executedSoFar < l1BatchNumber) {
+        console.log("Waiting for block execution on L1...");
+        await sleep(10000);
+        executedSoFar = (await zkSyncContract.getTotalBlocksExecuted()).toNumber();
+    }
+
+    // Try to prove directly through the mailbox
+    const resDirect = await directProofToMailboxOfL2LogInclusion(l1BatchNumber, l2TxHash, proof, l1BatchTxIndex);
+
+    console.log("Result of direct proof: ", resDirect);
 
     // Try to prove through our smart contract
-    /*const res = await l1_contract.checkLog(
+    const resSC = await l1_contract.checkLog(
         l2TxHash,
         l1BatchNumber,
-        proof?.id,
+        proof.id,
         l1BatchTxIndex,
-        proof?.proof,
+        proof.proof,
     );
 
-    console.log(res.wait())*/
+    console.log("Result from smart contract", resSC)
     process.exit();
 }
 

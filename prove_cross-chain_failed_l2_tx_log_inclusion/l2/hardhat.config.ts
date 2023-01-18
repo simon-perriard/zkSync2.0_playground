@@ -8,19 +8,13 @@ module.exports = {
   zksolc: {
     version: "1.2.3",
     compilerSource: "binary",
-    settings: {
-      optimizer: {
-        enabled: true,
-      },
-      experimental: {
-      },
-    },
+    settings: {},
   },
   defaultNetwork: "zkTestnet",
   networks: {
     zkTestnet: {
       url: "https://zksync2-testnet.zksync.dev", // URL of the zkSync network RPC
-      ethNetwork: GOERLI_ENDPOINT, // Can also be the RPC URL of the Ethereum network (e.g. `https://goerli.infura.io/v3/<API_KEY>`)
+      ethNetwork: GOERLI_ENDPOINT,
       zksync: true
     }
   },
