@@ -8,7 +8,7 @@ const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../../.goerli_endpoint'
 const MESSAGE = "Some L2->L1 message";
 
 const l2Provider = new Provider("https://zksync2-testnet.zksync.dev");
-const l1Provider = new Provider(GOERLI_ENDPOINT);
+const l1Provider = ethers.providers.getDefaultProvider(GOERLI_ENDPOINT);
 
 const WALLET = new Wallet(TEST_PRIVATE_KEY, l2Provider, l1Provider);
 
@@ -71,6 +71,8 @@ async function main() {
 
   const trx = await l2Provider.getTransaction(l2Receipt.transactionHash);
 
+  const {l1BatchNumber, l1BatchTxIndex} = await l2Provider.getTransactionReceipt(l2Receipt.transactionHash);
+
   // @ts-ignore
   console.log("trx.transactionIndex :>> ", trx.transactionIndex);
 
@@ -82,10 +84,10 @@ async function main() {
   // IMPORTANT: This method requires that the block is verified
   // and sent to L1!
   const result = await proveL2MessageInclusion(
-    block.l1BatchNumber,
+    l1BatchNumber,
     proof,
     // @ts-ignore
-    trx.transactionIndex
+    l1BatchTxIndex
   );
 
   console.log("Result is :>> ", result);
