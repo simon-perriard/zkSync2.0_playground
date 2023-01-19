@@ -1,7 +1,6 @@
 import { BigNumber, Contract, ethers, Wallet } from 'ethers';
 import { Provider, utils } from 'zksync-web3';
 import fs from 'fs';
-import { BOOTLOADER_FORMAL_ADDRESS, sleep } from 'zksync-web3/build/src/utils';
 
 const MESSAGE_TEST_L1_ABI = JSON.parse(fs.readFileSync(require.resolve('../../l1/artifacts/contracts/MessageTestL1.sol/MessageTestL1.json')).toString()).abi;
 const MESSAGE_TEST_L2_ABI = JSON.parse(fs.readFileSync(require.resolve('../artifacts-zk/contracts/MessageTestL2.sol/MessageTestL2.json')).toString()).abi;
@@ -77,35 +76,6 @@ async function triggerFromL1() {
     return tx;
 }
 
-async function getProof(l2TxHash) {
-    // Wait for the proof to be generated
-    let proof = await l2Provider.getLogProof(l2TxHash);
-    while (proof == null){
-        console.log("Waiting a bit more for the proof to be generated...");
-        await sleep(1000*30);
-        proof = await l2Provider.getLogProof(l2TxHash);
-    }
-    return proof;
-}
-
-async function directProofToMailboxOfL2LogInclusion(l1BatchNumber: ethers.BigNumberish, l2TxHash: ethers.BigNumberish, proof: any, trxIndex: number) {
-
-    const mailboxL1Contract = new ethers.Contract(zkSyncAddress, utils.ZKSYNC_MAIN_ABI, l1Provider);
-
-    const L2Log = {
-        l2ShardId: 0,
-        isService: true,
-        txNumberInBlock: trxIndex,
-        sender: BOOTLOADER_FORMAL_ADDRESS,
-        key: l2TxHash,
-        value: '0x0000000000000000000000000000000000000000000000000000000000000000'
-    };
-
-    let res = await mailboxL1Contract.proveL2LogInclusion(l1BatchNumber, proof.id, L2Log, proof.proof);
-  
-    return res;
-}
-
 async function main() {
     await zkSyncAddressSetup();
     
@@ -115,47 +85,10 @@ async function main() {
     // execution call
     const l2TxResponse = await l2Provider.getL2TransactionFromPriorityOp(l1TxResponse);
     console.log("L2 Tx Response: ", l2TxResponse);
-    
-    const l2TxHash = l2TxResponse.hash;
-    
-    // /!\ POTENTIAL BUG
+        
     // /!\ CANNOT USE waitFinalize() as it will return with an error because the Tx reverts on L2
     // The receipt of the L2 transaction corresponding to the call to the MessageTestL2 contract
-    //const l2TxReceipt = await l2TxResponse.waitFinalize();
-    //console.log("L2 Tx Receipt: ", l2TxReceipt);
-
-    // Wait for the proof to be generated
-    let proof = await getProof(l2TxHash);
-    console.log("Proof is: ", proof);
-
-    const {l1BatchNumber, l1BatchTxIndex} = await l2Provider.getTransactionReceipt(l2TxHash);
-
-    // We need to wait for our target block to be verified on L1
-    // We may have the proof but the block must be submitted to L1 for the verification request to work
-    let executedSoFar = (await zkSyncContract.getTotalBlocksExecuted()).toNumber();
-
-    while(executedSoFar < l1BatchNumber) {
-        console.log("Waiting for block execution on L1...");
-        await sleep(10000);
-        executedSoFar = (await zkSyncContract.getTotalBlocksExecuted()).toNumber();
-    }
-
-    // Try to prove directly through the mailbox
-    const resDirect = await directProofToMailboxOfL2LogInclusion(l1BatchNumber, l2TxHash, proof, l1BatchTxIndex);
-
-    console.log("Result of direct proof: ", resDirect);
-
-    // Try to prove through our smart contract
-    const resSC = await l1_contract.checkLog(
-        l2TxHash,
-        l1BatchNumber,
-        proof.id,
-        l1BatchTxIndex,
-        proof.proof,
-    );
-
-    console.log("Result from smart contract", resSC)
-    process.exit();
+    await l2TxResponse.waitFinalize();
 }
 
 try {
