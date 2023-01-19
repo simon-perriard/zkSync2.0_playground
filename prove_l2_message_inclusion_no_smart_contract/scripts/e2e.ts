@@ -10,12 +10,11 @@ const MESSAGE = "Some L2->L1 message";
 const l2Provider = new Provider("https://zksync2-testnet.zksync.dev");
 const l1Provider = ethers.providers.getDefaultProvider(GOERLI_ENDPOINT);
 
-const WALLET = new Wallet(TEST_PRIVATE_KEY, l2Provider, l1Provider);
+const wallet = new Wallet(TEST_PRIVATE_KEY, l2Provider, l1Provider);
 
 async function sendMessageToL1(text: string) {
   console.log(`Sending message to L1 with text ${text}`);
   const textBytes = ethers.utils.toUtf8Bytes(MESSAGE);
-  const wallet = new Wallet(TEST_PRIVATE_KEY, l2Provider, l1Provider);
 
   const messengerContract = new ethers.Contract(utils.L1_MESSENGER_ADDRESS, utils.L1_MESSENGER, wallet);
   const tx = await messengerContract.sendToL1(textBytes);
@@ -26,7 +25,7 @@ async function sendMessageToL1(text: string) {
 
 async function getL2MessageProof(blockNumber: ethers.BigNumberish) {
   console.log(`Getting L2 message proof for block ${blockNumber}`);
-  return await l2Provider.getMessageProof(blockNumber, WALLET.address, ethers.utils.keccak256(ethers.utils.toUtf8Bytes(MESSAGE)));
+  return await l2Provider.getMessageProof(blockNumber, wallet.address, ethers.utils.keccak256(ethers.utils.toUtf8Bytes(MESSAGE)));
 }
 
 async function proveL2MessageInclusion(l1BatchNumber: ethers.BigNumberish, proof: any, trxIndex: number) {
@@ -36,7 +35,7 @@ async function proveL2MessageInclusion(l1BatchNumber: ethers.BigNumberish, proof
   // all the information of the message sent from L2
   const messageInfo = {
     txNumberInBlock: trxIndex,
-    sender: WALLET.address,
+    sender: wallet.address,
     data: ethers.utils.toUtf8Bytes(MESSAGE),
   };
 
@@ -69,17 +68,11 @@ async function main() {
 
   console.log(`Proof is: `, proof);
 
-  const trx = await l2Provider.getTransaction(l2Receipt.transactionHash);
+  const { l1BatchNumber, l1BatchTxIndex } = await l2Provider.getTransactionReceipt(l2Receipt.transactionHash);
 
-  const {l1BatchNumber, l1BatchTxIndex} = await l2Provider.getTransactionReceipt(l2Receipt.transactionHash);
+  console.log("L1 Index for Tx in block :>> ", l1BatchTxIndex);
 
-  // @ts-ignore
-  console.log("trx.transactionIndex :>> ", trx.transactionIndex);
-
-  // @ts-ignore
-  const block = await l2Provider.getBlock(trx.blockNumber);
-
-  console.log("L1 Batch for block :>> ", block.l1BatchNumber);
+  console.log("L1 Batch for block :>> ", l1BatchNumber);
 
   // IMPORTANT: This method requires that the block is verified
   // and sent to L1!
