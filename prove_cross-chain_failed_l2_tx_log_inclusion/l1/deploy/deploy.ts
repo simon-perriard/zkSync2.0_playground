@@ -8,7 +8,7 @@ import { Provider } from 'zksync-web3';
 import fs from "fs";
 
 async function main() {
-
+  
   const l2Provider = new Provider('https://zksync2-testnet.zksync.dev');
   const MAILBOX_L1 = await l2Provider.getMainContractAddress();
 
@@ -18,9 +18,9 @@ async function main() {
   await contract.deployed();
 
   // Write the deployment address in the target file
-  fs.writeFileSync("../l1_deployment_address", contract.address);
+  fs.writeFileSync("../l1_deployment_address", await contract.address);
 
-  console.log(`MessageTestL1 contract was successfully deployed at ${contract.address}`);
+  console.log(`MessageTestL1 contract was successfully deployed at ${await contract.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

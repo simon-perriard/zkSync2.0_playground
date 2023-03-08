@@ -6,7 +6,7 @@ const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../../.goerli_endpoint'
 
 module.exports = {
   zksolc: {
-    version: "1.2.3",
+    version: "1.3.5",
     compilerSource: "binary",
     settings: {},
   },

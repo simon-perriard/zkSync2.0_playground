@@ -6,7 +6,8 @@ import "@matterlabs/zksync-contracts/l1/contracts/zksync/interfaces/IZkSync.sol"
 
 contract MessageTestL1 {
     address public owner;
-    uint256 constant ERGS_LIMIT = 2097152;
+    uint256 constant DEFAULT_ERGS_LIMIT = 2097152;
+    uint256 constant DEFAULT_GAS_PER_PUBDATA_UNIT = 800;
     IMailbox immutable mailbox;
     address constant BOOTLOADER_ADDRESS = 0x0000000000000000000000000000000000008001; // address(SYSTEM_CONTRACTS_OFFSET + 0x01);
 
@@ -21,7 +22,7 @@ contract MessageTestL1 {
     ) external payable {
         require(msg.sender == owner, "Only owner is allowed");
 
-        mailbox.requestL2Transaction{value: msg.value}(l2ContractAddr, 0, data, ERGS_LIMIT, new bytes[](0));
+        mailbox.requestL2Transaction{value: msg.value}(l2ContractAddr, 0, data, DEFAULT_ERGS_LIMIT, DEFAULT_GAS_PER_PUBDATA_UNIT, new bytes[](0), msg.sender);
     }
 
     function checkLog(

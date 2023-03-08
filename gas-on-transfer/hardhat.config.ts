@@ -1,25 +1,22 @@
 require("@matterlabs/hardhat-zksync-deploy");
 require("@matterlabs/hardhat-zksync-solc");
+import fs from "fs";
+
+const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../.goerli_endpoint')).toString();
 
 module.exports = {
   zksolc: {
-    version: "1.2.0",
-    compilerSource: "docker",
-    settings: {
-      experimental: {
-        dockerImage: "matterlabs/zksolc",
-        tag: "v1.2.0"
-      },
-    },
+    version: "1.3.5",
+    compilerSource: "binary",
+    settings: {},
   },
-  zkSyncDeploy: {
-    zkSyncNetwork: "https://zksync2-testnet.zksync.dev",
-    ethNetwork: "goerli", // Can also be the RPC URL of the network (e.g. `https://goerli.infura.io/v3/<API_KEY>`)
-  },
+  defaultNetwork: "zkTestnet",
   networks: {
-    hardhat: {
-      zksync: true,
-    },
+    zkTestnet: {
+      url: "https://zksync2-testnet.zksync.dev", // URL of the zkSync network RPC
+      ethNetwork: GOERLI_ENDPOINT,
+      zksync: true
+    }
   },
   solidity: {
     version: "0.8.16",
