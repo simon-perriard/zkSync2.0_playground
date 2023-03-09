@@ -65,6 +65,7 @@ async function triggerFromL1() {
     // Calling the L1 contract.
     const tx = await l1_contract.callZkSync(
         MESSAGE_TEST_L2_ADDRESS,
+        REFUND_TEST_L2_ADDRESS,
         data,
         {
             // Passing the necessary ETH `value` to cover the fee for the operation
