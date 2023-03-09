@@ -18,11 +18,12 @@ contract MessageTestL1 {
 
     function callZkSync(
         address l2ContractAddr,
+        address l2RefundAddr,
         bytes calldata data
     ) external payable {
         require(msg.sender == owner, "Only owner is allowed");
-
-        mailbox.requestL2Transaction{value: msg.value}(l2ContractAddr, 0, data, DEFAULT_ERGS_LIMIT, DEFAULT_GAS_PER_PUBDATA_UNIT, new bytes[](0), msg.sender);
+        require(msg.value == 3 wei);
+        mailbox.requestL2Transaction{value: 2 wei}(l2ContractAddr, 1 wei, data, DEFAULT_ERGS_LIMIT, DEFAULT_GAS_PER_PUBDATA_UNIT, new bytes[](0), l2RefundAddr);
     }
 
     function checkLog(

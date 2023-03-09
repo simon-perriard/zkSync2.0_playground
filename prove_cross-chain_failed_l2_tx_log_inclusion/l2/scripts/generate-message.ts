@@ -8,6 +8,7 @@ const MESSAGE_TEST_L2_ABI = JSON.parse(fs.readFileSync(require.resolve('../artif
 
 const MESSAGE_TEST_L1_ADDRESS = fs.readFileSync(require.resolve('../../l1_deployment_address')).toString();
 const MESSAGE_TEST_L2_ADDRESS = fs.readFileSync(require.resolve('../../l2_deployment_address')).toString();
+const REFUND_TEST_L2_ADDRESS = fs.readFileSync(require.resolve('../../l2_deployment_address_refund')).toString();
 
 const PRIV_KEY = fs.readFileSync(require.resolve('../../../.private_key')).toString();
 const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../../../.goerli_endpoint')).toString();
@@ -16,12 +17,13 @@ const GOERLI_ENDPOINT = fs.readFileSync(require.resolve('../../../.goerli_endpoi
 const l1Provider = ethers.providers.getDefaultProvider(GOERLI_ENDPOINT);
 const l2Provider = new Provider('https://zksync2-testnet.zksync.dev');
 
-const wallet = new Wallet(PRIV_KEY, l1Provider);
+const L1wallet = new Wallet(PRIV_KEY, l1Provider);
+const L2wallet = new Wallet(PRIV_KEY, l2Provider);
 
 const l1_contract = new Contract(
     MESSAGE_TEST_L1_ADDRESS,
     MESSAGE_TEST_L1_ABI,
-    wallet
+    L1wallet
 );
 
 // Getting the current address of the zkSync L1 bridge
@@ -29,14 +31,14 @@ let zkSyncAddress: string;
 // Getting the `Contract` object of the zkSync bridge
 let zkSyncContract: Contract;
 
-const SHOULD_FAIL = false;
+const SHOULD_FAIL = true;
 
 async function zkSyncAddressSetup() {
     zkSyncAddress = await l2Provider.getMainContractAddress();
     zkSyncContract = new Contract(
         zkSyncAddress,
         utils.ZKSYNC_MAIN_ABI,
-        wallet
+        L1wallet
     );
 }
 
@@ -108,6 +110,11 @@ async function directProofToMailboxOfL2LogInclusion(l1BatchNumber: ethers.BigNum
 
 async function main() {
     await zkSyncAddressSetup();
+
+    const refundBalance_pre = await l2Provider.getBalance(REFUND_TEST_L2_ADDRESS);
+    if (SHOULD_FAIL) {
+        console.log("Balance of refund address before call: ", refundBalance_pre);
+    }
     
     const l1TxResponse = await triggerFromL1();
     
@@ -154,7 +161,13 @@ async function main() {
         proof.proof,
     );
 
-    console.log("Result from smart contract", resSC)
+    console.log("Result from smart contract", resSC);
+
+    if (SHOULD_FAIL) {
+        const refundBalance_post = await l2Provider.getBalance(REFUND_TEST_L2_ADDRESS);
+        console.log("Delta of refund address balance: ", refundBalance_pre);
+    }
+
     process.exit();
 }
 
