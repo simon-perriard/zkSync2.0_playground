@@ -68,7 +68,7 @@ async function triggerFromL1() {
         data,
         {
             // Passing the necessary ETH `value` to cover the fee for the operation
-            value: baseCost,
+            value: BigNumber.from(3), // We pass 3 wei for some testing
             gasPrice
         }
     );
@@ -165,7 +165,7 @@ async function main() {
 
     if (SHOULD_FAIL) {
         const refundBalance_post = await l2Provider.getBalance(REFUND_TEST_L2_ADDRESS);
-        console.log("Delta of refund address balance: ", refundBalance_pre);
+        console.log("Delta of refund address balance: ", refundBalance_post.sub(refundBalance_pre));
     }
 
     process.exit();
