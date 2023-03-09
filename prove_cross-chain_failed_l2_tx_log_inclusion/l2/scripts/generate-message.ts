@@ -29,7 +29,7 @@ let zkSyncAddress: string;
 // Getting the `Contract` object of the zkSync bridge
 let zkSyncContract: Contract;
 
-const SHOULD_FAIL = true
+const SHOULD_FAIL = false;
 
 async function zkSyncAddressSetup() {
     zkSyncAddress = await l2Provider.getMainContractAddress();

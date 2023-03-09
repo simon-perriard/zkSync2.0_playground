@@ -4,6 +4,8 @@ import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
 import fs from "fs";
 
 const PRIV_KEY = fs.readFileSync(require.resolve('../../../.private_key')).toString();
+const MESSAGE_TEST_L1_ADDRESS = fs.readFileSync(require.resolve('../../l1_deployment_address')).toString();
+
 
 // An example of a deploy script that will deploy and call a simple contract.
 export default async function (hre: HardhatRuntimeEnvironment) {
@@ -16,7 +18,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const deployer = new Deployer(hre, wallet);
   const artifact = await deployer.loadArtifact("MessageTestL2");
 
-  const contract = await deployer.deploy(artifact, []);
+  const contract = await deployer.deploy(artifact, [MESSAGE_TEST_L1_ADDRESS]);
 
   // Show the contract info.
   const contractAddress = contract.address;
