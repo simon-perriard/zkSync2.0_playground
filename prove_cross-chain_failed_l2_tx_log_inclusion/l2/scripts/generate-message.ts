@@ -32,6 +32,7 @@ let zkSyncAddress: string;
 let zkSyncContract: Contract;
 
 const SHOULD_FAIL = true;
+const BRIDGED_AMOUNT = BigNumber.from(1);
 
 async function zkSyncAddressSetup() {
     zkSyncAddress = await l2Provider.getMainContractAddress();
@@ -69,7 +70,7 @@ async function triggerFromL1() {
         data,
         {
             // Passing the necessary ETH `value` to cover the fee for the operation
-            value: BigNumber.from(3), // We pass 3 wei for some testing
+            value: BRIDGED_AMOUNT,
             gasPrice
         }
     );
@@ -125,6 +126,11 @@ async function main() {
     console.log("L2 Tx Response: ", l2TxResponse);
     
     const l2TxHash = l2TxResponse.hash;
+
+    if (SHOULD_FAIL) {
+        const refundBalance_post = await l2Provider.getBalance(REFUND_TEST_L2_ADDRESS);
+        console.log("Delta of refund address balance: ", refundBalance_post.sub(refundBalance_pre).toNumber());
+    }
     
     // /!\ POTENTIAL BUG
     // /!\ CANNOT USE waitFinalize() as it will return with an error because the Tx reverts on L2
@@ -163,11 +169,6 @@ async function main() {
     );
 
     console.log("Result from smart contract", resSC);
-
-    if (SHOULD_FAIL) {
-        const refundBalance_post = await l2Provider.getBalance(REFUND_TEST_L2_ADDRESS);
-        console.log("Delta of refund address balance: ", refundBalance_post.sub(refundBalance_pre));
-    }
 
     process.exit();
 }
